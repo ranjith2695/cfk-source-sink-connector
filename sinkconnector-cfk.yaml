@@ -1,0 +1,31 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: sinksql
+  namespace: confluent
+spec:
+  class: "io.confluent.connect.jdbc.JdbcSinkConnector"
+  taskMax: 1
+  connectClusterRef:
+    name: connect
+  configs:
+    connection.url: jdbc:mysql://mysql:3306/demo?user=ranjith&password=test1234
+    topics: "jdbc-source-newtopic-mytopic"
+    insert.mode: upsert
+    pk.mode: record_value
+    pk.fields: "id"
+    delete.enabled: "false"
+    auto.create: "true"
+    auto.evolve: "true"
+    key.converter: io.confluent.connect.avro.AvroConverter
+    key.converter.schema.registry.url: https://schemaregistry.confluent.svc.cluster.local:8081
+    value.converter: io.confluent.connect.avro.AvroConverter
+    value.converter.schema.registry.url: https://schemaregistry.confluent.svc.cluster.local:8081
+    value.converter.schema.registry.ssl.truststore.location: /mnt/sslcerts/truststore.jks
+    value.converter.schema.registry.ssl.truststore.password: "mystorepassword"
+ #value.converter.schema.registry.ssl.keystore.location: /mnt/sslcerts/keystore.jks
+ #value.converter.schema.registry.ssl.keystore.password: "mystorepassword"
+    key.converter.schema.registry.ssl.truststore.location: /mnt/sslcerts/truststore.jks
+    key.converter.schema.registry.ssl.truststore.password: "mystorepassword"
+ #key.converter.schema.registry.ssl.keystore.location: /mnt/sslcerts/keystore.jks
+ #key.converter.schema.registry.ssl.keystore.password: "mystorepassword"
